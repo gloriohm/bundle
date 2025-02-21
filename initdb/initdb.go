@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 )
 
 const dbName = "bundle.db"
@@ -79,7 +79,7 @@ func createDatabase(dbPath string) (string, error) {
 
 func createSQLiteDB(dbPath string) error {
 	fmt.Println("Creating new SQLite database...")
-	db, err := sql.Open("sqlite3", dbPath)
+	db, err := sql.Open("sqlite", dbPath)
 	if err != nil {
 		return fmt.Errorf("failed to create database: %w", err)
 	}
