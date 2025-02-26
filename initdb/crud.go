@@ -22,3 +22,7 @@ func CreateQuest(db *sql.DB, quest tasks.Quest) (int64, error) {
 	}
 	return result.LastInsertId()
 }
+
+func CreateTask[T tasks.Task](db *sql.DB, task T, fields map[string]interface{}) error {
+	_, err := db.Exec("INSERT INTO")
+}

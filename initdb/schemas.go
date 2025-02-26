@@ -27,6 +27,7 @@ var CreateTables = []string{
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		name TEXT NOT NULL,
 		created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+		complete INTEGER DEFAULT 0,
 		priority INTEGER DEFAULT 50,
 		next_occurrence INTEGER DEFAULT (strftime('%s', 'now')),
 		days INTEGER DEFAULT 127,
@@ -34,6 +35,16 @@ var CreateTables = []string{
 		before_time TEXT DEFAULT NULL,
 		after_time TEXT DEFAULT NULL
 	);`,
+
+	// dailies log
+	`CREATE TABLE IF NOT EXISTS dailies_log (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		daily_name TEXT NOT NULL,
+		daily_id INTEGER NOT NULL,
+		completed_at TEXT DEFAULT CURRENT_TIMESTAMP,
+		FOREIGN KEY (daily_name) REFERENCES dailies(name) ON UPDATE CASCADE,
+		FOREIGN KEY (daily_id) REFERENCES dailies(id) ON DELETE CASCADE,
+	)`,
 
 	// goal - quest/daily junction tables
 	`
