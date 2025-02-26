@@ -74,7 +74,7 @@ func createDatabase(dbPath string) (string, error) {
 	}
 
 	fmt.Println("Database created at:", dbPath)
-	return dbPath, nil
+	return fullPath, nil
 }
 
 func createSQLiteDB(dbPath string) error {
@@ -85,16 +85,12 @@ func createSQLiteDB(dbPath string) error {
 	}
 	defer db.Close()
 
-	// Create an initial table (example)
-	_, err = db.Exec(`
-		CREATE TABLE IF NOT EXISTS tasks (
-			id INTEGER PRIMARY KEY AUTOINCREMENT,
-			title TEXT NOT NULL,
-			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-		);
-	`)
-	if err != nil {
-		return fmt.Errorf("failed to create tasks table: %w", err)
+	// Execute each table creation query
+	for _, query := range CreateTables {
+		_, err := db.Exec(query)
+		if err != nil {
+			return fmt.Errorf("failed to execute query: %w\nQuery: %s", err, query)
+		}
 	}
 
 	fmt.Println("Database intialized successfully!")
