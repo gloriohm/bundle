@@ -27,16 +27,21 @@ func ShowTasks(db *sql.DB) {
 }
 
 func AddTask(db *sql.DB, reader *bufio.Reader) {
-	fmt.Print("Enter task title: ")
+	var newTask []Goal
+	var updatedFields []string
+	// receive update date
+	fmt.Print("Enter task name: ")
 	taskTitle, _ := reader.ReadString('\n')
 	taskTitle = strings.TrimSpace(taskTitle)
 
 	if taskTitle == "" {
-		fmt.Println("Task title cannot be empty.")
+		fmt.Println("Task name cannot be empty.")
 		return
 	}
 
-	taskID, err := CreateGoal(db, taskTitle)
+	updatedFields = append(updatedFields, "name")
+
+	taskID, err := CreateTask(db, newTask, updatedFields)
 	if err != nil {
 		log.Println("Failed to create task:", err)
 		return
