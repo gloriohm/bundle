@@ -29,7 +29,7 @@ func CreateTask[T tasks.Task](db *sql.DB, task T, keys []string) (int64, error) 
 	table := task.TableName()
 	query, values, err := constructQuery(table, task, keys)
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("failes to insert task: %w", err)
 	}
 
 	result, err := db.Exec(query, values)
@@ -37,7 +37,7 @@ func CreateTask[T tasks.Task](db *sql.DB, task T, keys []string) (int64, error) 
 		return 0, err
 	}
 
-	return result.LastInsertId(), nil
+	return result.LastInsertId()
 }
 
 func constructQuery[T tasks.Task](table string, task T, keys []string) (string, []interface{}, error) {
